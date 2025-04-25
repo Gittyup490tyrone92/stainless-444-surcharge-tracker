@@ -1,0 +1,34 @@
+{# Forecast Insights Component Template 
+   Usage: 
+   {% include 'components/forecast_insights.html' with 
+      forecast=forecast_data
+   %}
+#}
+
+{% if forecast and forecast.available %}
+<div class="forecast-section">
+    <h3 class="forecast-title">Price Forecast Insights</h3>
+    
+    <img src="cid:surcharge_forecast" alt="Surcharge forecast" class="forecast-chart" />
+    
+    <div class="forecast-insights">
+        <div class="insight-item {% if forecast.trend_direction == 'up' %}positive{% elif forecast.trend_direction == 'down' %}negative{% else %}neutral{% endif %}">
+            Alloy surcharge is projected to {{ forecast.trend_description }} over the next 6 months.
+        </div>
+        
+        {% if forecast.significant_events %}
+        <div class="insight-item neutral">
+            {{ forecast.significant_events }}
+        </div>
+        {% endif %}
+        
+        {% if forecast.material_insights %}
+        {% for insight in forecast.material_insights %}
+        <div class="insight-item {% if insight.direction == 'up' %}positive{% elif insight.direction == 'down' %}negative{% else %}neutral{% endif %}">
+            {{ insight.message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+</div>
+{% endif %}
