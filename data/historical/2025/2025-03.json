@@ -1,0 +1,26 @@
+{
+  "date": "2025-03-01",
+  "raw_prices": {
+    "chromium": 12750,
+    "molybdenum": 35000,
+    "titanium": 7000
+  },
+  "composition": {
+    "chromium": 18.5,
+    "molybdenum": 2.1,
+    "titanium": 0.4
+  },
+  "contributions": {
+    "chromium": 2358.75,
+    "molybdenum": 735.00,
+    "titanium": 28.00
+  },
+  "total_surcharge": 3121.75,
+  "change_from_previous": 2.38,
+  "data_sources": [
+    "Metal Exchange Index",
+    "Commodity Price Report",
+    "Industry Analysis Weekly"
+  ],
+  "notes": "Molybdenum prices continue to recover from December 2024 drop, but still below Q3 2024 levels."
+}
