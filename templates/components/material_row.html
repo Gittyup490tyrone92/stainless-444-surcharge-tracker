@@ -1,0 +1,28 @@
+{# Material Row Component Template 
+   Usage: 
+   {% include 'components/material_row.html' with 
+      material_name='Chromium' 
+      color_class='chromium'
+      price=material_price
+      prev_price=previous_material_price
+      trend_image='cid:chromium_sparkline'
+   %}
+#}
+
+<div class="material-row {{ color_class }}">
+    <div class="material-name">{{ material_name }}</div>
+    <div class="material-price">${{ "%,d"|format(price) }}/MT</div>
+    <div class="material-change">
+        {% if prev_price %}
+            {% set change = ((price - prev_price) / prev_price * 100) %}
+            <span class="{% if change > 0 %}positive-change{% elif change < 0 %}negative-change{% else %}unchanged{% endif %}">
+                {% if change > 0 %}↑{% elif change < 0 %}↓{% else %}−{% endif %} {{ "%.1f"|format(change|abs) }}%
+            </span>
+        {% else %}
+            <span class="unchanged">−</span>
+        {% endif %}
+    </div>
+    <div class="material-trend">
+        <img src="{{ trend_image }}" alt="{{ material_name }} trend" height="24" />
+    </div>
+</div>
