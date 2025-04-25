@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stainless Steel 444 Alloy Surcharge Report - {{ report_month }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            font-size: 11pt;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+        
+        .report-date {
+            font-style: italic;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        h1 {
+            color: #1a5276;
+            margin-bottom: 5px;
+        }
+        
+        h2 {
+            color: #2874a6;
+            margin-top: 30px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+        
+        h3 {
+            color: #3498db;
+            margin-top: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .image-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .key-metrics {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        
+        .metric-box {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            width: 30%;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .metric-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #3498db;
+        }
+        
+        .metric-value {
+            font-size: 18pt;
+            font-weight: bold;
+        }
+        
+        .metric-change {
+            font-size: 10pt;
+            margin-top: 5px;
+        }
+        
+        .positive-change {
+            color: green;
+        }
+        
+        .negative-change {
+            color: red;
+        }
+        
+        .footnote {
+            font-size: 9pt;
+            color: #666;
+            margin-top: 30px;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+        
+        .page-break {
+            page-break-after: always;
+        }
+        
+        @media print {
+            .page-break {
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Stainless Steel 444 Alloy Surcharge Report</h1>
+            <div class="report-date">{{ report_month }} | Generated on {{ current_date }}</div>
+        </div>
+        
+        <h2>Executive Summary</h2>
+        <p>
+            This report presents the latest analysis of alloy surcharge trends for stainless steel grade 444 for {{ report_month }}. 
+            Grade 444 contains approximately 18.5% chromium, 2.1% molybdenum, and 0.4% titanium, with the alloy surcharge 
+            calculated based on the current market prices of these raw materials.
+        </p>
+        
+        <div class="key-metrics">
+            <div class="metric-box">
+                <div class="metric-title">Current Surcharge</div>
+                <div class="metric-value">${{ "%.2f"|format(current_month.total_surcharge) }}</div>
+                <div class="metric-change {% if current_month.change_from_previous > 0 %}positive-change{% else %}negative-change{% endif %}">
+                    {% if current_month.change_from_previous > 0 %}↑{% else %}↓{% endif %} {{ "%.2f"|format(current_month.change_from_previous|abs) }}% from previous month
+                </div>
+            </div>
+            
+            <div class="metric-box">
+                <div class="metric-title">12-Month Average</div>
+                <div class="metric-value">${{ "%.2f"|format(trend_analysis.avg_surcharge) }}</div>
+            </div>
+            
+            <div class="metric-box">
+                <div class="metric-title">Chromium Price</div>
+                <div class="metric-value">${{ "%,d"|format(current_month.raw_prices.chromium) }}</div>
+                <div class="metric-change">per metric ton</div>
+            </div>
+        </div>
+        
+        <h2>Raw Material Price Trends</h2>
+        <p>
+            The following chart shows the price trends of the three key alloying elements (chromium, molybdenum, and titanium) 
+            over the past 12 months. These raw material prices directly influence the monthly alloy surcharge.
+        </p>
+        
+        <div class="image-container">
+            <img src="{{ visualizations.price_chart }}" alt="Raw Material Price Trends" />
+        </div>
+        
+        <table>
+            <tr>
+                <th>Material</th>
+                <th>Current Price (USD/MT)</th>
+                <th>Monthly Change</th>
+                <th>Composition in SS444</th>
+                <th>Contribution to Surcharge</th>
+            </tr>
+            <tr>
+                <td>Chromium</td>
+                <td>${{ "%,d"|format(current_month.raw_prices.chromium) }}</td>
+                <td>
+                    {% set prev_month = historical_data[-2] if historical_data|length > 1 else None %}
+                    {% if prev_month %}
+                        {% set change = ((current_month.raw_prices.chromium - prev_month.chromium_price) / prev_month.chromium_price * 100) %}
+                        {% if change > 0 %}↑{% else %}↓{% endif %} {{ "%.2f"|format(change|abs) }}%
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
+                <td>18.5%</td>
+                <td>${{ "%.2f"|format(current_month.contributions.chromium) }}</td>
+            </tr>
+            <tr>
+                <td>Molybdenum</td>
+                <td>${{ "%,d"|format(current_month.raw_prices.molybdenum) }}</td>
+                <td>
+                    {% if prev_month %}
+                        {% set change = ((current_month.raw_prices.molybdenum - prev_month.molybdenum_price) / prev_month.molybdenum_price * 100) %}
+                        {% if change > 0 %}↑{% else %}↓{% endif %} {{ "%.2f"|format(change|abs) }}%
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
+                <td>2.1%</td>
+                <td>${{ "%.2f"|format(current_month.contributions.molybdenum) }}</td>
+            </tr>
+            <tr>
+                <td>Titanium</td>
+                <td>${{ "%,d"|format(current_month.raw_prices.titanium) }}</td>
+                <td>
+                    {% if prev_month %}
+                        {% set change = ((current_month.raw_prices.titanium - prev_month.titanium_price) / prev_month.titanium_price * 100) %}
+                        {% if change > 0 %}↑{% else %}↓{% endif %} {{ "%.2f"|format(change|abs) }}%
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
+                <td>0.4%</td>
+                <td>${{ "%.2f"|format(current_month.contributions.titanium) }}</td>
+            </tr>
+        </table>
+        
+        <div class="page-break"></div>
+        
+        <h2>Alloy Surcharge Analysis</h2>
+        <p>
+            The following chart illustrates the monthly alloy surcharge for stainless steel 444 over the past 12 months, 
+            showing the contribution of each alloying element and the total surcharge trend.
+        </p>
+        
+        <div class="image-container">
+            <img src="{{ visualizations.surcharge_chart }}" alt="Monthly Alloy Surcharge" />
+        </div>
+        
+        <h3>Element Contribution Analysis</h3>
+        <p>
+            The pie chart below shows the relative contribution of each alloying element to the total surcharge. 
+            Despite its smaller percentage in the alloy composition, molybdenum can have a significant impact 
+            on the overall surcharge due to its higher price per ton and price volatility.
+        </p>
+        
+        <div class="image-container">
+            <img src="{{ visualizations.pie_chart }}" alt="Element Contribution to Surcharge" />
+        </div>
+        
+        <h2>Historical Data</h2>
+        <p>
+            The table below provides historical data for the past 12 months, showing the raw material prices 
+            and resulting surcharge for each month.
+        </p>
+        
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Chromium (USD/MT)</th>
+                <th>Molybdenum (USD/MT)</th>
+                <th>Titanium (USD/MT)</th>
+                <th>Total Surcharge (USD/MT)</th>
+            </tr>
+            {% for item in historical_data %}
+            <tr>
+                <td>{{ item.date.strftime('%b %Y') if item.date is defined else item.date }}</td>
+                <td>${{ "%,d"|format(item.chromium_price) }}</td>
+                <td>${{ "%,d"|format(item.molybdenum_price) }}</td>
+                <td>${{ "%,d"|format(item.titanium_price) }}</td>
+                <td>${{ "%.2f"|format(item.total_surcharge) }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        
+        <h2>Market Notes</h2>
+        <p>
+            {{ current_month.notes if current_month.notes else "No specific market notes for this period." }}
+        </p>
+        
+        <div class="footnote">
+            <p>
+                Data sources: {{ ", ".join(current_month.data_sources) }}<br>
+                Report generated by the Stainless Steel 444 Alloy Surcharge Tracker on {{ current_date }}.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
