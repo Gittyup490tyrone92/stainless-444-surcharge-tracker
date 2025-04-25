@@ -1,0 +1,26 @@
+{
+  "date": "2025-04-01",
+  "raw_prices": {
+    "chromium": 12800,
+    "molybdenum": 36500,
+    "titanium": 7050
+  },
+  "composition": {
+    "chromium": 18.5,
+    "molybdenum": 2.1,
+    "titanium": 0.4
+  },
+  "contributions": {
+    "chromium": 2368.00,
+    "molybdenum": 766.50,
+    "titanium": 28.20
+  },
+  "total_surcharge": 3162.70,
+  "change_from_previous": 1.31,
+  "data_sources": [
+    "Metal Exchange Index",
+    "Commodity Price Report",
+    "Industry Analysis Weekly"
+  ],
+  "notes": "Slight recovery in molybdenum prices continues"
+}
