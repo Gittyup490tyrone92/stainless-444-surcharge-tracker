@@ -17,6 +17,7 @@ This composition makes 444 more resistant to stress corrosion cracking than aust
 - Automated alloy surcharge calculation
 - Advanced data validation with anomaly detection and cross-validation
 - Price forecasting using time series analysis (ARIMA, Exponential Smoothing)
+- Rich email templating with embedded charts and interactive elements
 - Visualization of price trends and surcharge components
 - Interactive dashboards with historical data and forecasts
 - Historical data tracking and comparison
@@ -69,6 +70,30 @@ Configure forecasting behavior in your `.env` file:
 ENABLE_FORECASTING=True  # Enable/disable forecasting feature
 ```
 
+## Enhanced Email Templating
+
+The system features a sophisticated email templating system with rich visual elements:
+
+- **Multiple Template Options**: Choose between basic, enhanced, or modular templates
+- **Embedded Charts**: Inline charts and sparklines integrated directly in emails
+- **Conditional Content**: Content sections that appear only when relevant
+- **Interactive Elements**: Expandable sections for detailed information
+- **Mobile Responsive**: Templates adapt to different screen sizes
+- **Component-Based Design**: Reusable components for easy customization
+
+Configure email templates in your `.env` file:
+```
+EMAIL_USE_ENHANCED_TEMPLATE=True
+EMAIL_TEMPLATE=modular_email_template.html
+```
+
+Available templates:
+- `email_template.html` - Basic template
+- `enhanced_email_template.html` - Rich visual template
+- `modular_email_template.html` - Component-based modular template
+
+For detailed information about customizing email templates, see [templates/README.md](templates/README.md).
+
 ## Project Structure
 
 ```
@@ -89,12 +114,16 @@ ENABLE_FORECASTING=True  # Enable/disable forecasting feature
 │   ├── calculate.py         # Surcharge calculation logic
 │   ├── data_validation.py   # Data validation module
 │   ├── price_forecasting.py # Price forecasting module
+│   ├── email_service.py     # Enhanced email service
 │   ├── generate_report.py   # Report generation script
 │   ├── monthly_update.py    # All-in-one update script
 │   └── __init__.py          # Package initialization
-├── templates/               # Report templates
+├── templates/               # Report and email templates
 │   ├── monthly_report_template.html
-│   └── email_template.html
+│   ├── email_template.html
+│   ├── enhanced_email_template.html
+│   ├── modular_email_template.html
+│   └── components/          # Reusable template components
 ├── .env.example            # Environment variables example
 ├── requirements.txt         # Project dependencies
 ├── setup.py                # Package installation script
