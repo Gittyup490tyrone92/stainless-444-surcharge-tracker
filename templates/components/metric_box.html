@@ -1,0 +1,41 @@
+{# Metric Box Component Template 
+   Usage: 
+   {% include 'components/metric_box.html' with 
+      title='Current Surcharge' 
+      value=current_month.total_surcharge
+      format='%.2f'
+      prefix='$'
+      change=current_month.change_from_previous
+      change_text='from previous month'
+      sparkline='cid:surcharge_sparkline'
+   %}
+#}
+
+<div class="metric-box">
+    <div class="metric-title">{{ title }}</div>
+    <div class="metric-value">{{ prefix }}{{ format|format(value) }}</div>
+    {% if change is defined %}
+        <div class="metric-change {% if change > 0 %}positive-change{% elif change < 0 %}negative-change{% else %}unchanged{% endif %}">
+            {% if change > 0 %}
+                ↑ {{ "%.2f"|format(change|abs) }}% {{ change_text }}
+            {% elif change < 0 %}
+                ↓ {{ "%.2f"|format(change|abs) }}% {{ change_text }}
+            {% else %}
+                Unchanged {{ change_text }}
+            {% endif %}
+            {% if sparkline is defined %}
+                <img src="{{ sparkline }}" alt="trend" class="sparkline" />
+            {% endif %}
+        </div>
+    {% elif comparison_value is defined %}
+        <div class="metric-change">
+            {% if value > comparison_value %}
+                <span class="positive-change">{{ "%.2f"|format(((value - comparison_value) / comparison_value * 100)|abs) }}% above {{ comparison_text }}</span>
+            {% elif value < comparison_value %}
+                <span class="negative-change">{{ "%.2f"|format(((comparison_value - value) / comparison_value * 100)|abs) }}% below {{ comparison_text }}</span>
+            {% else %}
+                <span class="unchanged">At {{ comparison_text }}</span>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
