@@ -1,0 +1,26 @@
+{
+  "date": "2024-04-01",
+  "raw_prices": {
+    "chromium": 12000,
+    "molybdenum": 46000,
+    "titanium": 6500
+  },
+  "composition": {
+    "chromium": 18.5,
+    "molybdenum": 2.1,
+    "titanium": 0.4
+  },
+  "contributions": {
+    "chromium": 2220.00,
+    "molybdenum": 966.00,
+    "titanium": 26.00
+  },
+  "total_surcharge": 3212.00,
+  "change_from_previous": 1.25,
+  "data_sources": [
+    "Metal Exchange Index",
+    "Commodity Price Report",
+    "Industry Analysis Weekly"
+  ],
+  "notes": "Molybdenum prices stabilizing after Q1 volatility."
+}
