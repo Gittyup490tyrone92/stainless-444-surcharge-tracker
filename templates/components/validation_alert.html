@@ -1,0 +1,21 @@
+{# Validation Alert Component Template 
+   Usage: 
+   {% include 'components/validation_alert.html' with 
+      validation=validation_result
+   %}
+#}
+
+{% if validation and validation.enabled and not validation.is_valid %}
+<div class="validation-alert {% if validation.issues|length > 2 %}error{% else %}warning{% endif %}">
+    <div class="validation-title">
+        {{ validation.issues|length }} Data Validation {% if validation.issues|length == 1 %}Issue{% else %}Issues{% endif %} Detected
+    </div>
+    <p>The following issues were identified during data validation:</p>
+    <ul class="validation-issues">
+        {% for issue in validation.issues %}
+        <li>{{ issue }}</li>
+        {% endfor %}
+    </ul>
+    <p>These issues have been logged and will be reviewed by the data team.</p>
+</div>
+{% endif %}
