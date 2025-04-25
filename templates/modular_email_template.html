@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stainless Steel 444 Alloy Surcharge Update</title>
+    <style>
+        /* Base styles */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        
+        .email-container {
+            max-width: 650px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        /* Header styles */
+        .header {
+            background-color: #2d6ca2;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .report-date {
+            font-style: italic;
+            opacity: 0.9;
+            margin-top: 5px;
+            font-size: 16px;
+        }
+        
+        /* Content sections */
+        .section {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .section-title {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #2d6ca2;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        /* Key metrics grid */
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .metric-box {
+            background-color: #f8f9fa;
+            border: 1px solid #e0e5e9;
+            border-radius: 6px;
+            padding: 15px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .metric-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+        }
+        
+        .metric-title {
+            font-weight: bold;
+            color: #566573;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .metric-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2d6ca2;
+            margin-bottom: 5px;
+        }
+        
+        .metric-change {
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .positive-change {
+            color: #27ae60;
+        }
+        
+        .negative-change {
+            color: #e74c3c;
+        }
+        
+        .unchanged {
+            color: #7f8c8d;
+        }
+        
+        .sparkline {
+            display: inline-block;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+        
+        /* Material prices section */
+        .materials-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .material-row {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 6px;
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+        }
+        
+        .material-row.chromium {
+            border-left-color: #7d3c98;
+        }
+        
+        .material-row.molybdenum {
+            border-left-color: #28b463;
+        }
+        
+        .material-row.titanium {
+            border-left-color: #f39c12;
+        }
+        
+        .material-name {
+            font-weight: bold;
+            width: 120px;
+        }
+        
+        .material-price {
+            font-weight: bold;
+            width: 120px;
+        }
+        
+        .material-change {
+            width: 90px;
+            text-align: right;
+        }
+        
+        .material-trend {
+            flex-grow: 1;
+            text-align: right;
+            padding-right: 10px;
+        }
+        
+        /* Validation section */
+        .validation-alert {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .validation-alert.warning {
+            background-color: #fff3cd;
+            border-color: #ffeeba;
+        }
+        
+        .validation-alert.error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+        
+        .validation-title {
+            font-weight: bold;
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .validation-alert.error .validation-title {
+            color: #721c24;
+        }
+        
+        .validation-issues {
+            list-style-type: none;
+            padding-left: 20px;
+            margin: 10px 0;
+        }
+        
+        .validation-issues li {
+            margin-bottom: 5px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .validation-issues li::before {
+            content: "⚠️";
+            position: absolute;
+            left: 0;
+        }
+        
+        /* Forecast section */
+        .forecast-section {
+            background-color: #f1f9fe;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        
+        .forecast-title {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #2874a6;
+            font-weight: bold;
+        }
+        
+        .forecast-chart {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .forecast-insights {
+            background-color: white;
+            border: 1px solid #d6e9f9;
+            border-radius: 6px;
+            padding: 15px;
+        }
+        
+        .insight-item {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .insight-item::before {
+            content: "🔍";
+            position: absolute;
+            left: 0;
+        }
+        
+        .insight-item.positive::before {
+            content: "📈";
+        }
+        
+        .insight-item.negative::before {
+            content: "📉";
+        }
+        
+        .insight-item.neutral::before {
+            content: "📊";
+        }
+        
+        /* Call to action buttons */
+        .cta-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: #2d6ca2;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+        
+        .cta-button:hover {
+            background-color: #1f5087;
+        }
+        
+        .cta-button.secondary {
+            background-color: #6c757d;
+        }
+        
+        .cta-button.secondary:hover {
+            background-color: #5a6268;
+        }
+        
+        /* Table styles */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        
+        .data-table th {
+            background-color: #2d6ca2;
+            color: white;
+            text-align: left;
+            padding: 10px;
+        }
+        
+        .data-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        /* Footer styles */
+        .footer {
+            padding: 20px;
+            background-color: #f8f9fa;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .footer p {
+            margin: 5px 0;
+        }
+        
+        /* Responsive styles for mobile */
+        @media only screen and (max-width: 600px) {
+            .metric-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- Header with title and month -->
+        <div class="header">
+            <h1>Stainless Steel 444 Alloy Surcharge Update</h1>
+            <div class="report-date">{{ report_month }}</div>
+        </div>
+        
+        <!-- Executive summary section -->
+        <div class="section">
+            <h2 class="section-title">Executive Summary</h2>
+            
+            <div class="metric-grid">
+                <!-- Current Surcharge Metric Box -->
+                {% include 'components/metric_box.html' with 
+                    title='Current Surcharge'
+                    value=current_month.total_surcharge
+                    format='%.2f'
+                    prefix='$'
+                    change=current_month.change_from_previous
+                    change_text='from previous month'
+                    sparkline='cid:surcharge_sparkline'
+                %}
+                
+                <!-- 12-Month Average Metric Box -->
+                {% include 'components/metric_box.html' with 
+                    title='12-Month Average'
+                    value=trend_analysis.avg_surcharge
+                    format='%.2f'
+                    prefix='$'
+                    comparison_value=trend_analysis.avg_surcharge
+                    comparison_text='average'
+                %}
+            </div>
+        </div>
+        
+        <!-- Raw Material Prices Section -->
+        <div class="section">
+            <h2 class="section-title">Raw Material Prices</h2>
+            
+            <div class="materials-container">
+                <!-- Chromium Row -->
+                {% set prev_month = historical_data[-2] if historical_data|length > 1 else None %}
+                
+                {% include 'components/material_row.html' with 
+                    material_name='Chromium'
+                    color_class='chromium'
+                    price=current_month.raw_prices.chromium
+                    prev_price=prev_month.chromium_price if prev_month else None
+                    trend_image='cid:chromium_sparkline'
+                %}
+                
+                <!-- Molybdenum Row -->
+                {% include 'components/material_row.html' with 
+                    material_name='Molybdenum'
+                    color_class='molybdenum'
+                    price=current_month.raw_prices.molybdenum
+                    prev_price=prev_month.molybdenum_price if prev_month else None
+                    trend_image='cid:molybdenum_sparkline'
+                %}
+                
+                <!-- Titanium Row -->
+                {% include 'components/material_row.html' with 
+                    material_name='Titanium'
+                    color_class='titanium'
+                    price=current_month.raw_prices.titanium
+                    prev_price=prev_month.titanium_price if prev_month else None
+                    trend_image='cid:titanium_sparkline'
+                %}
+            </div>
+        </div>
+        
+        <!-- Validation Results Section -->
+        {% include 'components/validation_alert.html' with validation=validation %}
+        
+        <!-- Price Forecast Section -->
+        {% if forecast and forecast.available %}
+        <div class="section">
+            {% include 'components/forecast_insights.html' with forecast=forecast %}
+        </div>
+        {% endif %}
+        
+        <!-- Surcharge Composition Section -->
+        <div class="section">
+            <h2 class="section-title">Surcharge Composition</h2>
+            
+            <img src="cid:contribution_pie" alt="Element contribution to surcharge" style="width: 100%; max-width: 400px; height: auto; display: block; margin: 0 auto 20px;" />
+            
+            <table class="data-table">
+                <tr>
+                    <th>Element</th>
+                    <th>Composition</th>
+                    <th>Contribution</th>
+                    <th>% of Surcharge</th>
+                </tr>
+                <tr>
+                    <td>Chromium</td>
+                    <td>18.5%</td>
+                    <td>${{ "%.2f"|format(current_month.contributions.chromium) }}</td>
+                    <td>{{ "%.1f"|format(current_month.contributions.chromium / current_month.total_surcharge * 100) }}%</td>
+                </tr>
+                <tr>
+                    <td>Molybdenum</td>
+                    <td>2.1%</td>
+                    <td>${{ "%.2f"|format(current_month.contributions.molybdenum) }}</td>
+                    <td>{{ "%.1f"|format(current_month.contributions.molybdenum / current_month.total_surcharge * 100) }}%</td>
+                </tr>
+                <tr>
+                    <td>Titanium</td>
+                    <td>0.4%</td>
+                    <td>${{ "%.2f"|format(current_month.contributions.titanium) }}</td>
+                    <td>{{ "%.1f"|format(current_month.contributions.titanium / current_month.total_surcharge * 100) }}%</td>
+                </tr>
+                <tr style="font-weight: bold;">
+                    <td>Total</td>
+                    <td>-</td>
+                    <td>${{ "%.2f"|format(current_month.total_surcharge) }}</td>
+                    <td>100%</td>
+                </tr>
+            </table>
+        </div>
+        
+        <!-- Market Notes -->
+        {% if current_month.notes %}
+        <div class="section">
+            <h2 class="section-title">Market Notes</h2>
+            <p>{{ current_month.notes }}</p>
+        </div>
+        {% endif %}
+        
+        <!-- Call to action buttons -->
+        <div class="cta-container">
+            <a href="{{ dashboard_link }}" class="cta-button">View Full Dashboard</a>
+            <a href="{{ download_link }}" class="cta-button secondary">Download Data</a>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>This is an automated report from the Stainless Steel 444 Alloy Surcharge Tracker.</p>
+            <p>Data sources: {{ ", ".join(current_month.data_sources) }}</p>
+            <p>If you have any questions, please contact the system administrator.</p>
+        </div>
+    </div>
+</body>
+</html>
